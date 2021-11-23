@@ -22,5 +22,12 @@
 			"const message = config.get('message');",
 			"export { message };"
 		]
+	},
+	"Create first rg": {
+		"prefix": "pd2",
+		"body": [
+			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
+			"const resourceGroup = new azure.ResourceGroup('ndc-rg', {});"
+		]
 	}
 }
