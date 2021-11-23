@@ -1,8 +1,7 @@
 import * as pulumi from "@pulumi/pulumi";
+import { run } from './program';
 
-const config = new pulumi.Config();
-const message = config.get('message');
-export { message };
-
-import { ResourceGroup } from "@pulumi/azure-native/resources";
-const resourceGroup = new ResourceGroup('ndc-rg', {});
+const args = process.argv.slice(2);
+const projectName = args[0]
+const rgName = args[1]
+run(projectName, rgName).catch(err => console.log(err));

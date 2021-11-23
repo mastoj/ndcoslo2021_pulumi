@@ -1,10 +1,16 @@
 {
     "name": "ndcoslo2021_pulumi",
+    "scripts": {
+
+    },
     "devDependencies": {
         "@types/node": "^14"
     },
     "dependencies": {
         "@pulumi/azure-native": "^1.47.0",
         "@pulumi/pulumi": "^3.0.0"
+    },
+    "scripts": {
+        "start": "tsc && node ./bin/index.js"
     }
 }

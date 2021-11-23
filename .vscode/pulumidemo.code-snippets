@@ -29,5 +29,65 @@
 			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
 			"const resourceGroup = new azure.ResourceGroup('ndc-rg', {});"
 		]
+	},
+	"Create RG function": {
+		"prefix": "pd3",
+		"body": [
+			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
+				"import * as pulumi from '@pulumi/pulumi';",
+				"import { Config } from '@pulumi/pulumi';",
+				"import { InlineProgramArgs, LocalWorkspace } from '@pulumi/pulumi/automation';",
+				"",
+				"const createRg = (name: string) => {",
+				"    return new ResourceGroup(name, {",
+				"        location: 'westeurope',",
+				"        tags: {",
+				"            'automated': 'true'",
+				"        }",
+				"    });",
+				"}",
+		]
+	},
+	"Create up function": {
+		"prefix": "pd4", 
+		"body": [
+			"export const run = async (projectName: string, rgName: string) => {",
+			"    const program = async () => {",
+			"        const rg = createRg(rgName);",
+			"        return {",
+			"            rgName: rg.name",
+			"        };",
+			"    };",
+			"",
+			"    const args: InlineProgramArgs = {",
+			"        stackName: projectName,",
+			"        projectName: 'automatedRg',",
+			"        program: program",
+			"    }",
+			"    const stack = await LocalWorkspace.createOrSelectStack(args);",
+			"    const upRes = await stack.up({onOutput: console.info});",
+			"    console.log('==> Rg name: ' + upRes.outputs.rgName.value);",
+			"    return upRes.outputs.rgName.value;",
+			"};",
+		]
+	},
+	"Create console app": {
+		"prefix": "pd5",
+		"body": [
+		"import { run } from './program';",
+		"",
+		"const args = process.argv.slice(2);",
+		"const projectName = args[0]",
+		"const rgName = args[1]",
+		"run(projectName, rgName).catch(err => console.log(err));",
+		]
+	},
+	"Add scripts to package.json": {
+		"prefix": "pd6",
+		"body": [
+		"    \"scripts\": {",
+		"        \"start\": \"tsc && node ./bin/index.js\"",
+		"    }",
+		]
 	}
 }
