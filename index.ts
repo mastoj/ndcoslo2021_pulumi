@@ -18,6 +18,12 @@ app.post("/rg", async (req, res) => {
     res.send("Done: " + JSON.stringify(result));
 });
 
+app.delete("/rg/:projectName", async (req, res) => {
+    console.log("Params: ", req.params);
+    res.send("Deleted");
+    
+})
+
 /*
 POST http://localhost:3000/rg
 Content-Type: application/json
