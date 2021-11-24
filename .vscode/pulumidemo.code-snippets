@@ -16,7 +16,8 @@
 	// 	"description": "Log output to console"
 	// }
 	"Read pulumi config": {
-		"prefix": "pd1", 
+		"prefix": "pd1",
+		"scope": "typescript",
 		"body": [
 			"const config = new pulumi.Config();",
 			"const message = config.get('message');",
@@ -25,6 +26,7 @@
 	},
 	"Create first rg": {
 		"prefix": "pd2",
+		"scope": "typescript",
 		"body": [
 			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
 			"const resourceGroup = new azure.ResourceGroup('ndc-rg', {});"
@@ -32,6 +34,7 @@
 	},
 	"Create RG function": {
 		"prefix": "pd3",
+		"scope": "typescript",
 		"body": [
 			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
 				"import * as pulumi from '@pulumi/pulumi';",
@@ -50,6 +53,7 @@
 	},
 	"Create up function": {
 		"prefix": "pd4", 
+		"scope": "typescript",
 		"body": [
 			"export const run = async (projectName: string, rgName: string) => {",
 			"    const program = async () => {",
@@ -73,6 +77,7 @@
 	},
 	"Create console app": {
 		"prefix": "pd5",
+		"scope": "typescript",
 		"body": [
 		"import { run } from './program';",
 		"",
@@ -84,10 +89,34 @@
 	},
 	"Add scripts to package.json": {
 		"prefix": "pd6",
+		"scope": "json",
 		"body": [
 		"    \"scripts\": {",
 		"        \"start\": \"tsc && node ./bin/index.js\"",
 		"    }",
 		]
+	},
+	"Create post endpoint": {
+		"prefix": "pd7",
+		"scope": "typescript",
+		"body": [
+			"import * as express from 'express';",
+			"",
+			"const app = express();",
+			"const port = 3000;",
+			"app.use(express.json());",
+			"",
+			"type CreateRequest = {",
+			"    projectName: string,",
+			"    rgName: string",
+			"}",
+			"app.post('/rg', async (req, res) => {",
+			"    const payload = req.body as CreateRequest;",
+			"    console.log('==> request: ', payload);",
+			"    const result = await run(payload.projectName, payload.rgName);",
+			"    res.send('Done: ' + JSON.stringify(result));",
+			"});",
+		]
+
 	}
 }

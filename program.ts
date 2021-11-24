@@ -4,6 +4,9 @@ import { Config } from '@pulumi/pulumi';
 import { InlineProgramArgs, LocalWorkspace } from '@pulumi/pulumi/automation';
 
 const createRg = (name: string) => {
+    // Create kafka cluster
+    // Create topic
+    // ...
     return new ResourceGroup(name, {
         location: 'westeurope',
         tags: {
