@@ -117,6 +117,51 @@
 			"    res.send('Done: ' + JSON.stringify(result));",
 			"});",
 		]
-
+	},
+	"Create post request": {
+		"prefix": "pd8",
+		"scope": "typescript",
+		"body": [
+"/*",
+"POST http://localhost:3000/rg",
+"Content-Type: application/json",
+"",
+"{",
+"    \"projectName\": \"ndc\",",
+"    \"rgName\": \"my-rg\"",
+"}",
+"*/"
+		]
+	},
+	"Create destroy function": {
+		"prefix": "pd9",
+		"scope": "typescript",
+		"body": [
+			"export const destroy = async (projectName: string) => {",
+			"    const args: InlineProgramArgs = {",
+			"        stackName: projectName,",
+			"        projectName: \"automatedRg\",",
+			"        program: async () => {}",
+			"    }",
+			"    const stack = await LocalWorkspace.createOrSelectStack(args);",
+			"    const destroyRes = await stack.destroy({onOutput: console.info});",
+			"    const ws = await LocalWorkspace.create({ projectSettings: { name: projectName, runtime: \"nodejs\"}});",
+            "    ws.removeStack(projectName);",
+			"    return \"destroyed\";",
+			"}",
+		]
+	},
+	"Create destroy endpoint": {
+		"prefix": "pd10",
+		"scope": "typescript",
+		"body": [
+			"app.delete(\"/rg/:projectName\", async (req, res) => {",
+			"    const result = await destroy(req.params.projectName);",
+			"    res.send(\"Destroyed: \" + JSON.stringify(result));",
+			"})",
+"/*",
+"DELETE http://localhost:3000/rg/ndc",
+"*/",
+		]
 	}
 }

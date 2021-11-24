@@ -21,9 +21,12 @@ app.post("/rg", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send("Done: " + JSON.stringify(result));
 }));
 app.delete("/rg/:projectName", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Params: ", req.params);
-    res.send("Deleted");
+    const result = yield program_1.destroy(req.params.projectName);
+    res.send("Destroyed: " + JSON.stringify(result));
 }));
+/*
+DELETE http://localhost:3000/rg/ndc
+*/
 /*
 POST http://localhost:3000/rg
 Content-Type: application/json

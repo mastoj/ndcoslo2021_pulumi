@@ -12,6 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const resources_1 = require("@pulumi/azure-native/resources");
 const automation_1 = require("@pulumi/pulumi/automation");
 const createRg = (name) => {
+    // Create kafka cluster
+    // Create topic
+    // ...
     return new resources_1.ResourceGroup(name, {
         location: 'westeurope',
         tags: {
@@ -35,5 +38,17 @@ exports.run = (projectName, rgName) => __awaiter(void 0, void 0, void 0, functio
     const upRes = yield stack.up({ onOutput: console.info });
     console.log('==> Rg name: ' + upRes.outputs.rgName.value);
     return upRes.outputs.rgName.value;
+});
+exports.destroy = (projectName) => __awaiter(void 0, void 0, void 0, function* () {
+    const args = {
+        stackName: projectName,
+        projectName: "automatedRg",
+        program: () => __awaiter(void 0, void 0, void 0, function* () { })
+    };
+    const stack = yield automation_1.LocalWorkspace.createOrSelectStack(args);
+    const destroyRes = yield stack.destroy({ onOutput: console.info });
+    const ws = yield automation_1.LocalWorkspace.create({ projectSettings: { name: projectName, runtime: "nodejs" } });
+    ws.removeStack("tomasja/automatedRg/" + projectName);
+    return destroyRes.summary;
 });
 //# sourceMappingURL=program.js.map

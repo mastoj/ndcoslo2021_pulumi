@@ -1,5 +1,5 @@
 import * as pulumi from "@pulumi/pulumi";
-import { run } from './program';
+import { destroy, run } from './program';
 
 import * as express from 'express';
 
@@ -17,12 +17,13 @@ app.post("/rg", async (req, res) => {
     const result = await run(payload.projectName, payload.rgName);
     res.send("Done: " + JSON.stringify(result));
 });
-
 app.delete("/rg/:projectName", async (req, res) => {
-    console.log("Params: ", req.params);
-    res.send("Deleted");
-    
+    const result = await destroy(req.params.projectName);
+    res.send("Destroyed: " + JSON.stringify(result));
 })
+/*
+DELETE http://localhost:3000/rg/hello
+*/
 
 /*
 POST http://localhost:3000/rg
@@ -32,8 +33,7 @@ Content-Type: application/json
     "projectName": "ndc",
     "rgName": "my-rg"
 }
-
-DELETE http://localhost:3000/rg/ndc
 */
 
 app.listen(port, () => console.log("Application is running"));
+

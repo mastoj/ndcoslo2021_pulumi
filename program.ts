@@ -33,3 +33,16 @@ export const run = async (projectName: string, rgName: string) => {
     console.log('==> Rg name: ' + upRes.outputs.rgName.value);
     return upRes.outputs.rgName.value;
 };
+
+export const destroy = async (projectName: string) => {
+    const args: InlineProgramArgs = {
+        stackName: projectName,
+        projectName: "automatedRg",
+        program: async () => {}
+    }
+    const stack = await LocalWorkspace.createOrSelectStack(args);
+    const destroyRes = await stack.destroy({onOutput: console.info});
+    const ws = await LocalWorkspace.create({ projectSettings: { name: projectName, runtime: "nodejs"}});
+    ws.removeStack("tomasja/automatedRg/" + projectName);
+    return destroyRes.summary;
+}
