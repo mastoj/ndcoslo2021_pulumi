@@ -29,7 +29,7 @@
 		"scope": "typescript",
 		"body": [
 			"import { ResourceGroup } from '@pulumi/azure-native/resources';",
-			"const resourceGroup = new azure.ResourceGroup('ndc-rg', {});"
+			"const resourceGroup = new ResourceGroup('ndc-rg', {});"
 		]
 	},
 	"Create RG function": {
@@ -116,6 +116,7 @@
 			"    const result = await run(payload.projectName, payload.rgName);",
 			"    res.send('Done: ' + JSON.stringify(result));",
 			"});",
+			"app.listen(port, () => console.log(\"Application is running\"));"
 		]
 	},
 	"Create post request": {
